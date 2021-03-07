@@ -8,5 +8,7 @@ public class ReasonConstant {
     public static final String genderNotValid="GENDER NOT VALID";
     public static final String passwordNotValid="PASSWORD LENGTH SHOULD BE EIGHT AND CAN'T BE NULL";
     public static final String valid="VALID";
+    public static final String userRegistered="USER REGISTERED";
+    public static final String emailAlreadyRegistered="EMAIL ALREADY REGISTERED";
 
 }

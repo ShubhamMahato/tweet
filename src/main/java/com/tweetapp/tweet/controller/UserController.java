@@ -50,10 +50,8 @@ public class UserController implements CommandLineRunner {
         System.out.println("Enter the password");
         user.setPassword(sc.nextLine().trim());
         System.out.println(user.toString());
-        if(UserValidator.validateUser(user,dates)== ReasonConstant.valid){
-            userService.signUp(user);
-            System.out.println("SAVED");
-        }
+        System.out.println(userService.signUp(user,dates));
+
 
     }
 }

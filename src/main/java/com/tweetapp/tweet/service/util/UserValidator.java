@@ -72,6 +72,7 @@ public class UserValidator {
         }
        return false;
     }
+
     private UserValidator(){
 
     }

@@ -5,5 +5,6 @@ import com.tweetapp.tweet.model.User;
 
 public interface UserService {
 
-    public User signUp(User user);
+    String signUp(User user,String date);
+    boolean checkIfUserExists(String email);
 }
