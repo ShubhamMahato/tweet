@@ -15,7 +15,7 @@ public class UserValidator {
             return ReasonConstant.lastNameNotValid;
         } else if (!emailValidator(user.getEmail())) {
             return ReasonConstant.emailNotValid;
-        } else if (date.length() > 0 && !isValidDate(date)) {
+        } else if (date!=null && date.length() > 0 && !isValidDate(date)) {
             return ReasonConstant.dateNotValid;
         } else if (user.getGender() == null || user.getGender() != null && !isValidGender(user)) {
             return ReasonConstant.genderNotValid;
