@@ -1,5 +1,6 @@
 package com.tweetapp.tweet.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,8 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Table(name="User")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+
 public class User {
     @Id
     @Column(name = "user_id")

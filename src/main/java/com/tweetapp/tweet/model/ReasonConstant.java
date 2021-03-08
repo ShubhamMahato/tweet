@@ -14,8 +14,16 @@ public class ReasonConstant {
     public static final String userLoggedIn="USER LOGGED IN";
     public static final String invalidCredentials="INVALID CREDENTIALS PLEASE TRY AGAIN";
     public static final String postSaved="POST SAVED";
+    public static final String invalidPost="INVALID POST";
+
     public static final String oldPasswordNotCorrect="EITHER OLD PASSWORD OR EMAIL IS NOT CORRECT";
-    public static final String passwordChanged="PASSWORD CHANGED";
+    public static final String passwordChanged="PASSWORD CHANGED!! PLEASE LOGIN AGAIN";
+    public static final String noPostAvailable="NO POST AVAILABLE";
+    public static final String noUserFound="No USER FOUND";
+    public static final String loggedOut="LOGGED OUT";
+    public static final String wrongInput="WRONG INPUT";
+
+
 
 
 

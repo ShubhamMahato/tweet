@@ -1,5 +1,6 @@
 package com.tweetapp.tweet.controller;
 
+import com.tweetapp.tweet.model.Post;
 import com.tweetapp.tweet.model.ReasonConstant;
 import com.tweetapp.tweet.model.User;
 import com.tweetapp.tweet.service.PostService;
@@ -7,78 +8,137 @@ import com.tweetapp.tweet.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Scanner;
 
 
 public class LoggedInUser {
     Logger logger = LoggerFactory.getLogger(LoggedInUser.class);
 
-    public void UnloggedUserMenu(UserService userService,PostService postService){
-        Scanner sc=new Scanner(System.in);
+    public void UnloggedUserMenu(UserService userService, PostService postService) {
+        Scanner sc = new Scanner(System.in);
         System.out.println("1. Register");
         System.out.println("2. Login");
         System.out.println("3. Forgot Password");
         System.out.println("Enter your choice");
-        int choice = sc.nextInt();
+        int choice = 0;
+        try {
+            choice = sc.nextInt();
+        } catch (Exception e) {
+            System.out.println(ReasonConstant.wrongInput);
+            UnloggedUserMenu(userService, postService);
+        }
         switch (choice) {
             case 1:
                 registerUserMenu(userService);
                 break;
             case 2:
-                logInUserMenu(userService,postService);
+                logInUserMenu(userService, postService);
                 break;
             case 3:
+                System.out.println("5. Reset Password");
+                sc.nextLine();
+                System.out.println("Enter your email address");
+                String email = sc.nextLine().trim();
+                System.out.println("enter your old password");
+                String oldPassword = sc.nextLine().trim();
+                System.out.println("enter  your new password");
+                String newPassword = sc.nextLine().trim();
+                if (email != null && oldPassword != null && newPassword != null) {
+                    System.out.println(userService.forgotPassword(email, oldPassword, newPassword));
+                } else {
+                    System.out.println(ReasonConstant.invalidCredentials);
+                }
                 break;
             default:
+                System.out.println("WRONG OPTIONS");
                 break;
         }
     }
 
-    public void loggedInUserMenu(UserService userService,PostService postService) {
-        boolean flag=true;
-        while(flag) {
+    public void loggedInUserMenu(UserService userService, PostService postService) {
+        boolean flag = true;
+        while (flag) {
             Scanner sc = new Scanner(System.in);
-            System.out.println("i. Post a tweet");
-            System.out.println("ii. View my tweets");
-            System.out.println("iii. View all tweets");
-            System.out.println("iv. View All Users");
-            System.out.println("v. Reset Password");
-            System.out.println("vi. Logout");
+            System.out.println("1. Post a tweet");
+            System.out.println("2. View my tweets");
+            System.out.println("3. View all tweets");
+            System.out.println("4. View All Users");
+            System.out.println("5. Reset Password");
+            System.out.println("6. Logout");
             System.out.println("Choose an Option");
-            int choice = sc.nextInt();
+            int choice = 0;
+            try {
+                choice = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println(ReasonConstant.wrongInput);
+            }
             switch (choice) {
                 case 1:
                     System.out.println("1. Post a tweet");
                     System.out.println("enter the post");
-                    String post = sc.nextLine();
+                    sc.nextLine();
+                    String post = sc.nextLine().trim();
                     System.out.println(postService.saveUsersPost(post));
                     break;
                 case 2:
                     System.out.println("2. View my tweets");
-                    System.out.println(postService.getAllUsersPost());
+                    List<Post> getMyTweets = postService.getAllUsersPost();
+                    if (getMyTweets != null && !getMyTweets.isEmpty()) {
+
+                        System.out.println("POST ENDED");
+                    } else {
+                        System.out.println(ReasonConstant.noPostAvailable);
+                    }
                     break;
                 case 3:
                     System.out.println("3. View all tweets");
-                    System.out.println(postService.getAllPost());
+                    List<Post> getAllTweets = postService.getAllPost();
+                    if (getAllTweets != null && !getAllTweets.isEmpty()) {
+                        System.out.println("POST ENDED");
+                    } else {
+                        System.out.println(ReasonConstant.noPostAvailable);
+                    }
                     break;
                 case 4:
                     System.out.println("4. View All Users");
-                    System.out.println(userService.getAllUsers());
+                    List<User> allUsers = userService.getAllUsers();
+                    if (!allUsers.isEmpty()) {
+                        System.out.println("USER FINISHED");
+                    } else {
+                        System.out.println(ReasonConstant.noUserFound);
+                    }
                     break;
                 case 5:
                     System.out.println("5. Reset Password");
+                    sc.nextLine();
+                    System.out.println("Enter your email address");
+                    String email = sc.nextLine().trim();
+                    System.out.println("enter your old password");
+                    String oldPassword = sc.nextLine().trim();
+                    System.out.println("enter  your new password");
+                    String newPassword = sc.nextLine().trim();
+                    if (email != null && oldPassword != null && newPassword != null) {
+                        System.out.println(userService.forgotPassword(email, oldPassword, newPassword));
+                        userService.logout();
+                        flag = false;
+                    } else {
+                        System.out.println(ReasonConstant.invalidCredentials);
+                    }
                     break;
                 case 6:
                     System.out.println("vi. Logout");
-                    flag=false;
+                    System.out.println(userService.logout());
+                    flag = false;
                     break;
                 default:
+                    System.out.println("WRONG OPTIONS");
                     break;
             }
         }
     }
 
-    public void registerUserMenu(UserService userService){
+    public void registerUserMenu(UserService userService) {
         Scanner sc = new Scanner(System.in);
         User user = new User();
         String dates = null;
@@ -88,14 +148,14 @@ public class LoggedInUser {
         user.setFirstName(sc.nextLine().trim());
 
         System.out.println("do you want to enter lastname press y");
-        String checkLastName=sc.nextLine();
-        if(checkLastName.equalsIgnoreCase("y")) {
+        String checkLastName = sc.nextLine();
+        if (checkLastName.equalsIgnoreCase("y")) {
             System.out.println("Enter the LastName");
             user.setLastName(sc.nextLine().trim());
         }
         System.out.println("do you want to enter date of birth press y");
-        String checkDOB=sc.nextLine();
-        if(checkDOB.equalsIgnoreCase("y")) {
+        String checkDOB = sc.nextLine();
+        if (checkDOB.equalsIgnoreCase("y")) {
             System.out.println("Enter the dob");
             System.out.println("dd-mm-yyyy");
             dates = sc.nextLine().trim();
@@ -105,17 +165,20 @@ public class LoggedInUser {
         sc.nextLine();
         System.out.println("Enter the password");
         user.setPassword(sc.nextLine().trim());
-        System.out.println(userService.signUp(user,dates));
+        System.out.println(userService.signUp(user, dates));
     }
 
-    public void logInUserMenu(UserService userService, PostService postService){
+    public void logInUserMenu(UserService userService, PostService postService) {
         Scanner sc = new Scanner(System.in);
         System.out.println("enter the email");
-        String email=sc.nextLine();
+        String email = sc.nextLine().trim();
         System.out.println("enter the password");
-        String password=sc.nextLine();
-        if(userService.loginUser(email,password).equalsIgnoreCase(ReasonConstant.userLoggedIn)){
-            loggedInUserMenu(userService,postService);
+        String password = sc.nextLine().trim();
+        if (userService.loginUser(email, password).equalsIgnoreCase(ReasonConstant.userLoggedIn)) {
+            System.out.println(ReasonConstant.userLoggedIn);
+            loggedInUserMenu(userService, postService);
+        } else {
+            System.out.println(ReasonConstant.invalidCredentials);
         }
     }
 }

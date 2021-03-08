@@ -31,7 +31,7 @@ public class DbConfiguration {
         System.out.println(url+" "+driver+" "+username+" "+password);
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName(driver);
-        dataSourceBuilder.url(url);
+        dataSourceBuilder.url(url+"?createDatabaseIfNotExist=true");
         dataSourceBuilder.username(username);
         dataSourceBuilder.password(password);
         return dataSourceBuilder.build();

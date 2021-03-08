@@ -25,9 +25,13 @@ public class PostServiceImpl implements PostService {
     public String saveUsersPost(String post) {
         List<LoggedUser> loggedUsers = loggedUserDao.findAll();
         if (loggedUsers.size() == 1) {
-            Post loggedUserPost = Post.builder().email(loggedUsers.get(0).getEmail()).post(post).build();
-            postDao.save(loggedUserPost);
-            return ReasonConstant.postSaved;
+            if (post != null && post.length() > 0) {
+                Post loggedUserPost = Post.builder().email(loggedUsers.get(0).getEmail()).post(post).build();
+                postDao.save(loggedUserPost);
+                return ReasonConstant.postSaved;
+            } else {
+                return ReasonConstant.invalidPost;
+            }
         } else {
             return ReasonConstant.pleaseTryLogOutAndLoginAgain;
         }
@@ -39,14 +43,25 @@ public class PostServiceImpl implements PostService {
         List<Post> posts = new ArrayList<>();
         if (loggedUsers.size() == 1) {
             posts.addAll(postDao.findByEmail(loggedUsers.get(0).getEmail()));
+            for (Post post : posts) {
+                System.out.print("USER:--" + post.getEmail() + " ");
+                System.out.println("POST:--" + post.getPost() + "\n");
+            }
             return posts;
         }
         return posts;
     }
 
     @Override
-    public List<Post> getAllPost(){
-        return postDao.findAll();
+    public List<Post> getAllPost() {
+        List<Post> posts = postDao.findAll();
+        if (posts != null && !posts.isEmpty()) {
+            for (Post post : posts) {
+                System.out.print("USER:--" + post.getEmail() + " ");
+                System.out.println("POST:--" + post.getPost() + "\n");
+            }
+        }
+        return posts;
     }
 }
 

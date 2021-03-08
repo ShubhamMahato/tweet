@@ -13,5 +13,6 @@ public interface UserService {
     String loginUser(String email, String password);
     List<User> getAllUsers();
     String forgotPassword(String email, String oldPassword, String newPassword);
+    String logout();
 
 }

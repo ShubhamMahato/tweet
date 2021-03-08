@@ -1,14 +1,10 @@
 package com.tweetapp.tweet.controller;
 
-import com.tweetapp.tweet.dao.LoggedUserDao;
-import com.tweetapp.tweet.model.User;
 import com.tweetapp.tweet.service.PostService;
 import com.tweetapp.tweet.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.Scanner;
 
 @Component
 public class UserController implements CommandLineRunner {
