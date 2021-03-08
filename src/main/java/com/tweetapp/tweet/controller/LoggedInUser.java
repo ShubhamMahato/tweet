@@ -13,7 +13,12 @@ import java.util.Scanner;
 
 
 public class LoggedInUser {
-    Logger logger = LoggerFactory.getLogger(LoggedInUser.class);
+
+    /**
+     * Unlogged User menu
+     * @param userService
+     * @param postService
+     */
 
     public void UnloggedUserMenu(UserService userService, PostService postService) {
         Scanner sc = new Scanner(System.in);
@@ -56,6 +61,11 @@ public class LoggedInUser {
         }
     }
 
+    /**
+     * Logged in user menu
+     * @param userService
+     * @param postService
+     */
     public void loggedInUserMenu(UserService userService, PostService postService) {
         boolean flag = true;
         while (flag) {
@@ -138,6 +148,10 @@ public class LoggedInUser {
         }
     }
 
+    /**
+     * Registration menu
+     * @param userService
+     */
     public void registerUserMenu(UserService userService) {
         Scanner sc = new Scanner(System.in);
         User user = new User();
@@ -168,6 +182,11 @@ public class LoggedInUser {
         System.out.println(userService.signUp(user, dates));
     }
 
+    /**
+     * get user Logged in Menu
+     * @param userService
+     * @param postService
+     */
     public void logInUserMenu(UserService userService, PostService postService) {
         Scanner sc = new Scanner(System.in);
         System.out.println("enter the email");

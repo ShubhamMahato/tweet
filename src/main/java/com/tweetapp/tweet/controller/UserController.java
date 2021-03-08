@@ -16,6 +16,12 @@ public class UserController implements CommandLineRunner {
     @Autowired
     PostService postService;
 
+    /**
+     * Menu for Not logged in user
+     * @param args
+     * @throws Exception
+     */
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -23,6 +29,7 @@ public class UserController implements CommandLineRunner {
         boolean flag = true;
 
         while(flag) {
+            //keep calling the unlogged menu
            loggedInUser.UnloggedUserMenu(userService,postService);
         }
 

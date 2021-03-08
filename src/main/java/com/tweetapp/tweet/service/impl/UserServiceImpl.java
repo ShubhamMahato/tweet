@@ -22,14 +22,25 @@ public class UserServiceImpl implements UserService {
     @Autowired
     LoggedUserDao loggedUserDao;
 
+    /**
+     * User signup
+     * @param user
+     * @param dates
+     * @return
+     */
     @Override
     public String signUp(User user, String dates) {
+        //validate user details
         String userValidation = UserValidator.validateUser(user, dates);
+        //matching if user is valid
         if (userValidation.equalsIgnoreCase(ReasonConstant.valid)) {
+            //check if user exists
             if (checkIfUserExists(user.getEmail())) {
+                //save user
                 userDao.save(user);
                 return ReasonConstant.userRegistered;
             } else {
+                //give error
                 return ReasonConstant.emailAlreadyRegistered;
             }
         } else {
@@ -37,18 +48,34 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * check if user exists in db
+     * @param email
+     * @return
+     */
     public boolean checkIfUserExists(String email) {
         return userDao.findByEmail(email) == null;
     }
 
+    /**
+     * UserLogin
+     * @param email
+     * @param password
+     * @return
+     */
     public String loginUser(String email, String password) {
+        // find user by email and password
         if (userDao.findByEmailAndPassword(email, password) != null) {
+            //add user to login state
             LoggedUser loggedUser = LoggedUser.builder().email(email).build();
             if (!loggedUserDao.findAll().isEmpty()) {
+                //deleting if user exists already
                 loggedUserDao.deleteAll();
+                //saving currently logged in user
                 loggedUserDao.save(loggedUser);
                 return ReasonConstant.userLoggedIn;
             } else {
+                //save user without deleting
                 loggedUserDao.save(loggedUser);
                 return ReasonConstant.userLoggedIn;
             }
@@ -57,6 +84,10 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * get all the users excepts logged in
+     * @return
+     */
     public List<User> getAllUsers() {
         List<User> allUsers = userDao.findAll();
         LoggedUser loggedUser = loggedUserDao.findAll().get(0);
@@ -73,18 +104,32 @@ public class UserServiceImpl implements UserService {
         return allUsers;
     }
 
+    /**
+     * forgot user passwords
+     * @param email
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
     @Override
     public String forgotPassword(String email, String oldPassword, String newPassword) {
+        //find if users exists and password is correct
         User user = userDao.findByEmailAndPassword(email, oldPassword);
         if (user == null) {
+            //if not found return error
             return ReasonConstant.oldPasswordNotCorrect;
         } else {
+            //change the password and save
             user.setPassword(newPassword);
             userDao.save(user);
             return ReasonConstant.passwordChanged;
         }
     }
 
+    /**
+     * logout the user
+     * @return
+     */
     @Override
     public String logout() {
         loggedUserDao.deleteAll();

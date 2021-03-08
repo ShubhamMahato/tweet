@@ -24,7 +24,10 @@ public class DbConfiguration {
     @Value("${password}")
     private String password;
 
-
+    /**
+     * Setting the data source
+     * @return
+     */
 
     @Bean
     public DataSource getDataSource() {
